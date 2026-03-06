@@ -1,0 +1,63 @@
+Setting up Jenkins on Amazon Linux 2023 is a great step toward automating your CI/CD pipelines. Because Amazon Linux 2023 uses `dnf` as its package manager and Jenkins regularly updates its repository signing keys (most recently for 2026), the installation process differs slightly from older Amazon Linux 2 tutorials.
+
+### Step 1: Install Java
+
+Jenkins is a Java-based application and requires Java 17 or 21 to run. Amazon Linux 2023 provides Amazon Corretto, a no-cost, production-ready distribution of OpenJDK. We will install Java 21:
+
+```bash
+sudo dnf install -y java-21-amazon-corretto
+```
+*You can verify the installation by running `java -version`.*
+
+### Step 3: Add the Jenkins Repository
+Jenkins is not included in the default Amazon Linux 2023 repositories, so you need to add the official Jenkins repository to your system:
+
+```bash
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+```
+Next, import the Jenkins GPG signing key so your package manager can verify the authenticity of the download. *(Note: Jenkins updated this key for 2026)*:
+
+```bash
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2026.key
+```
+
+### Step 4: Install Jenkins
+With the repository and key in place, you can now install Jenkins:
+
+```bash
+sudo dnf install -y jenkins
+```
+
+### Step 5: Start and Enable the Jenkins Service
+
+Start the Jenkins service and enable it so that it automatically starts up whenever your EC2 instance reboots:
+
+```bash
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+```
+
+*You can check that it is running smoothly by typing `sudo systemctl status jenkins`.*
+
+### Step 6: Unlock Jenkins via the Web UI
+
+1. Open your web browser and navigate to `http://<Your-EC2-Public-IP>:8080`.
+2. You will be greeted by the **Unlock Jenkins** screen, which asks for an initial administrative password.
+3. Retrieve this password from your server by running the following command in your terminal:
+```bash
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+```
+
+
+4. Copy the long alphanumeric string outputted by that command, paste it into the browser, and click **Continue**.
+
+### Step 7: Complete the Setup Wizard
+
+* **Install Plugins:** When prompted, click **Install suggested plugins**. This installs the core set of plugins (like Git, Pipeline, and Workspace Cleanup) that most users need.
+* **Create First Admin User:** Fill out the form to create your permanent admin credentials. Do not lose these!
+* **Instance Configuration:** Confirm your Jenkins URL and click **Save and Finish**.
+
+---
+
+Would you like me to guide you through creating your first Jenkins Pipeline or show you how to connect Jenkins to a GitHub repository?
