@@ -1,0 +1,38 @@
+name : Advanced cache
+
+on:
+  workflow_dispatch
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@4
+        with:
+          node-version: 20
+          
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+# Store the version of the node 
+      - name: Get Node Version
+        id: node
+        run: |
+          echo "version=$(node -v)" >> $GITHUB_OUTPUT
+
+# This is most critical part as this is storing the cahce 
+# We are using the os and node version (unless these things changes the cache will we good to go)
+      - name: Get node_modules cache
+        uses: actions/cache@v4
+        id: node_modules
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}-${{ steps.node.outputs.version }}
+
+      - run: npm install
+      
+        
+  
