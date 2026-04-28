@@ -138,3 +138,18 @@ Type Focus Mode and hit Enter.
 "launchMode": "fullscreen",
 ```
 
+## Catppuccin Theme
+To get the Catppuccin look in your WSL terminal, you usually need to do two things: apply the color scheme to Windows Terminal (the app hosting WSL) and then (optionally) theme your shell prompt (like bash or zsh) for the full aesthetic.
+
+1. Apply Catppuccin to Windows Terminal
+This changes the background, text colors, and the "flavour" (Mocha, Macchiato, Frappé, or Latte).  
+
+Get the Colors: Go to the Catppuccin Windows Terminal GitHub.
+
+Open Settings: In Windows Terminal, press Ctrl + ,.
+
+Open the JSON: Click Open JSON file at the bottom left of the settings screen.  
+
+Add the Scheme: Find the "schemes": [] section in the text file and paste the JSON for your preferred flavor (e.g., Mocha.json) inside those brackets.
+
+Enable it: Save the file, go back to the Terminal UI, select your WSL Profile > Appearance > Color scheme, and pick Catppuccin.
